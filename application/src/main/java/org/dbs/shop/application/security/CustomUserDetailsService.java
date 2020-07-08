@@ -4,6 +4,8 @@ import java.util.Collection;
 
 import org.dbs.shop.domain.customer.Customer;
 import org.dbs.shop.domain.customer.IRepositoryCustomer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -18,6 +20,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class CustomUserDetailsService implements UserDetailsService {
 
+	private static Logger logger = LoggerFactory.getLogger(CustomUserDetailsService.class);
+
 	@Autowired
 	private IRepositoryCustomer repositoryCustomer;
 
@@ -29,13 +33,13 @@ public class CustomUserDetailsService implements UserDetailsService {
 		if (customer == null) {
 			throw new UsernameNotFoundException("Email " + customerName + " not found");
 		}
-
-		return new User(customer.getName(), customer.getPassword(),
-				getAuthorities(customer));
+		logger.debug("Customer found with name {}", customerName);
+		return new User(customer.getName(), customer.getPassword(), getAuthorities(customer));
 	}
 
 	private static Collection<? extends GrantedAuthority> getAuthorities(final Customer customer) {
 		final String[] userRoles = customer.getRoles().stream().map((role) -> role.name()).toArray(String[]::new);
+		logger.debug("With User Roles {}", userRoles);
 		final Collection<GrantedAuthority> authorities = AuthorityUtils.createAuthorityList(userRoles);
 		return authorities;
 	}
