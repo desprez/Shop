@@ -1,4 +1,4 @@
-package org.dbs.shop.security;
+package org.dbs.shop.security.jwt;
 
 import org.dbs.shop.application.security.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,7 @@ public class JwtAuthenticationController {
 	private AuthenticationManager authenticationManager;
 
 	@Autowired
-	private JwtTokenUtil jwtTokenUtil;
+	private JwtTokenManager jwtTokenUtil;
 
 	@Autowired
 	private CustomUserDetailsService userDetailsService;

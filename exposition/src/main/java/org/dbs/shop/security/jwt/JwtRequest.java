@@ -1,4 +1,4 @@
-package org.dbs.shop.security;
+package org.dbs.shop.security.jwt;
 
 import java.io.Serializable;
 

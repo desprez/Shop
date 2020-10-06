@@ -1,4 +1,4 @@
-package org.dbs.shop.security;
+package org.dbs.shop.security.jwt;
 
 import java.io.IOException;
 
@@ -29,7 +29,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 	private CustomUserDetailsService jwtUserDetailsService;
 
 	@Autowired
-	private JwtTokenUtil jwtTokenUtil;
+	private JwtTokenManager jwtTokenUtil;
 
 	@Override
 	protected void doFilterInternal(final HttpServletRequest request, final HttpServletResponse response,

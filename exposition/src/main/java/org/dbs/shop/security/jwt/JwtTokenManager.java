@@ -1,6 +1,5 @@
-package org.dbs.shop.security;
+package org.dbs.shop.security.jwt;
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -15,9 +14,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
 @Component
-public class JwtTokenUtil implements Serializable {
-
-	private static final long serialVersionUID = -2550185165626007488L;
+public class JwtTokenManager {
 
 	public static final long JWT_TOKEN_VALIDITY = 5 * 60 * 60;
 
@@ -41,7 +38,10 @@ public class JwtTokenUtil implements Serializable {
 
 	// for retrieveing any information from token we will need the secret key
 	private Claims getAllClaimsFromToken(final String token) {
-		return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
+		return Jwts.parser() //
+				.setSigningKey(secret) //
+				.parseClaimsJws(token) //
+				.getBody();
 	}
 
 	// check if the token has expired
@@ -63,9 +63,11 @@ public class JwtTokenUtil implements Serializable {
 	// Serialization(https://tools.ietf.org/html/draft-ietf-jose-json-web-signature-41#section-3.1)
 	// compaction of the JWT to a URL-safe string
 	private String doGenerateToken(final Map<String, Object> claims, final String subject) {
-		return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
+		return Jwts.builder().setClaims(claims).setSubject(subject) //
+				.setIssuedAt(new Date(System.currentTimeMillis())) //
 				.setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000))
-				.signWith(SignatureAlgorithm.HS512, secret).compact();
+				.signWith(SignatureAlgorithm.HS512, secret) //
+				.compact();
 	}
 
 	// validate token
